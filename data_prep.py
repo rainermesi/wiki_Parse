@@ -14,7 +14,10 @@ u_df = union_func(1,11)
 def et_filter(x):
     abc = ['A', 'a', 'B', 'b', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'R', 'r', 'S', 's', 'Š', 'š', 'Z', 'z', 'Ž', 'ž', 'T', 't', 'U', 'u', 'V', 'v', 'Õ', 'õ', 'Ä', 'ä', 'Ö', 'ö', 'Ü', 'ü']
     u_df_et = x[x['0'].isin(abc)]
+    u_df_et = u_df_et[u_df_et['1'].isin(abc)]
     u_df_et = u_df_et.groupby(['0','1']).sum()
+    #miks groupby kirjutab col 2 üle?
+    u_df_et['3'] = u_df_et.groupby(['0','1'])['2'].sum().rank(method='dense', ascending=False).astype(int)
     return u_df_et    
     
 et_filter(u_df).to_csv('f_output.csv')
