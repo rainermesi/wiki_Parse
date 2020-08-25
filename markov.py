@@ -1,19 +1,32 @@
 import numpy as np
 import random
+# import regex module
 import re
+# import additional data structures module
+# defaultdict is like a dictionary but returns a default value when called with a non-existent key
 from collections import defaultdict
 
 # Read text from file and tokenize.
 path = 'pride-and-prejudice.txt'
+
+# Alternative way to open/read the file
+#temp_text = open(path,encoding='utf-8').read()
+
 with open(path,encoding='utf-8') as f:
-  text = f.read()
+    text = f.read()
+
+# list comprehension
+# [expression for item in list if condition is met]
+
 tokenized_text = [
     word
     for word in re.split('\W+', text)
     if word != ''
 ]
 
+
 # Create graph.
+# defaultdict inside a defaultdict?
 markov_graph = defaultdict(lambda: defaultdict(int))
 
 last_word = tokenized_text[0].lower()
