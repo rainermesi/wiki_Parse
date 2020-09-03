@@ -27,3 +27,6 @@ for first_letter in ('u','a','e'):
   next_letters = list(tempdict[first_letter].keys())[:letter_limit]
   for next_letter in next_letters:
     print(first_letter+next_letter)
+
+# use numpy random choice
+# undestand the final part
