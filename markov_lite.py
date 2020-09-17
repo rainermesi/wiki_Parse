@@ -61,13 +61,13 @@ def walk_graph(graph, distance=5, start_node=None):
   
   
   weights = np.array(
-      list(markov_graph[start_node].values()),
+      list(tempdict[start_node].values()),
       dtype=np.float64)
   # Normalize word counts to sum to 1.
   weights /= weights.sum()
 
   # Pick a destination using weighted distribution.
-  choices = list(markov_graph[start_node].keys())
+  choices = list(tempdict[start_node].keys())
   chosen_word = np.random.choice(choices, None, p=weights)
   
   return [chosen_word] + walk_graph(
@@ -76,4 +76,44 @@ def walk_graph(graph, distance=5, start_node=None):
   
 for i in range(10):
   print(' '.join(walk_graph(
-      markov_graph, distance=12)), '\n')
+      tempdict, distance=5)), '\n')
+
+
+
+# %%
+
+# random. offers different random object gerators
+# choice generates random objects from a list
+#
+# random.choice([1,2,3,4,5])
+# random.choice(list(tempdict.keys()))
+
+#
+
+# np.array creates an array with dictionary item values that can be manipulated. In this case letter counts.
+# /= divides the variable with itself
+# .sum ads up all the vallues in the np.array
+# dividing each array element by the sum of the array gives the percentage weight of the element to the whole
+# It is the same things as :
+# (np.array([1,2,3,4,5]) / np.array([1,2,3,4,5]).sum())
+#
+# weights = np.array(list(tempdict['m'].values()),dtype=np.float64) / np.array(list(tempdict['m'].values()),dtype=np.float64).sum()
+# weights /= weights.sum()
+
+#
+
+# this is combined into making random but weighed choices
+# np.random.choice([1,2,3,4,5], None, p=(np.array([1,2,3,4,5]) / np.array([1,2,3,4,5]).sum()))
+
+#
+
+# the last part is recursion?
+
+def func001(loops=5):
+  if loops <= 0:
+    return []
+  return 1 + func001(loops=loops-1)
+
+func001()
+
+# %%

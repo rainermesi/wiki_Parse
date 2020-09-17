@@ -56,10 +56,10 @@ def walk_graph(graph, distance=5, start_node=None):
   weights = np.array(
       list(markov_graph[start_node].values()),
       dtype=np.float64)
-  print('Weights 1: ',weights)
+  #print('Weights 1: ',weights)
   # Normalize word counts to sum to 1.
   weights /= weights.sum()
-  print('Weights 2: ',weights)
+  #print('Weights 2: ',weights)
 
   # Pick a destination using weighted distribution.
   choices = list(markov_graph[start_node].keys())
