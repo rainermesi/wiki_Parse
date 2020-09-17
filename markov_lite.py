@@ -48,3 +48,32 @@ for first_letter in ('u','a','e'):
 # use numpy random choice
 # undestand the final part
 
+# distance > lenght of word
+
+def walk_graph(graph, distance=5, start_node=None):
+  """Returns a list of words from a randomly weighted walk."""
+  if distance <= 0:
+    return []
+  
+  # If not given, pick a start node at random.
+  if not start_node:
+    start_node = random.choice(list(graph.keys()))
+  
+  
+  weights = np.array(
+      list(markov_graph[start_node].values()),
+      dtype=np.float64)
+  # Normalize word counts to sum to 1.
+  weights /= weights.sum()
+
+  # Pick a destination using weighted distribution.
+  choices = list(markov_graph[start_node].keys())
+  chosen_word = np.random.choice(choices, None, p=weights)
+  
+  return [chosen_word] + walk_graph(
+      graph, distance=distance-1,
+      start_node=chosen_word)
+  
+for i in range(10):
+  print(' '.join(walk_graph(
+      markov_graph, distance=12)), '\n')

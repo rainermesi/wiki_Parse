@@ -56,8 +56,10 @@ def walk_graph(graph, distance=5, start_node=None):
   weights = np.array(
       list(markov_graph[start_node].values()),
       dtype=np.float64)
+  print('Weights 1: ',weights)
   # Normalize word counts to sum to 1.
   weights /= weights.sum()
+  print('Weights 2: ',weights)
 
   # Pick a destination using weighted distribution.
   choices = list(markov_graph[start_node].keys())
@@ -66,6 +68,8 @@ def walk_graph(graph, distance=5, start_node=None):
   return [chosen_word] + walk_graph(
       graph, distance=distance-1,
       start_node=chosen_word)
+
+walk_graph(markov_graph,start_node='most')
   
 for i in range(10):
   print(' '.join(walk_graph(
