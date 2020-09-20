@@ -10,7 +10,7 @@ from collections import defaultdict
 
 # %%
 # read in corpus
-list_ow = open('test_corpus.txt',"r",encoding='utf-8').read().split()
+list_ow = open('test_corpus.txt',"r",encoding='utf-8').read().upper().split()
 
 #%%
 # nested tempdict to count the number of instances for each letter after the first letter
@@ -47,12 +47,10 @@ for first_letter in ('u','a','e'):
     print(first_letter+next_letter)
 
 # %%
-# use numpy random choice
-# undestand the final part
 
 # distance > lenght of word
 
-def walk_graph(graph, distance=5, start_node=None):
+def walk_graph(graph, distance=3, start_node=None):
   """Returns a list of words from a randomly weighted walk."""
   if distance <= 0:
     return []
@@ -63,26 +61,41 @@ def walk_graph(graph, distance=5, start_node=None):
   
   
   weights = np.array(
-      list(tempdict[start_node].values()),
+      list(graph[start_node].values()),
       dtype=np.float64)
-  # Normalize word counts to sum to 1.
+  # Normalize letter counts to sum to 1. Create % weights for each letter.
   weights /= weights.sum()
 
-  # Pick a destination using weighted distribution.
-  choices = list(tempdict[start_node].keys())
-  chosen_word = np.random.choice(choices, None, p=weights)
+  # Pick next letter using weighted distribution.
+  choices = list(graph[start_node].keys())
+  chosen_letter = np.random.choice(choices, None, p=weights)
   
-  return [chosen_word] + walk_graph(
+  # recursively build a word until distance = 0
+  return [chosen_letter] + walk_graph(
       graph, distance=distance-1,
-      start_node=chosen_word)
-  
-for i in range(10):
-  print(' '.join(walk_graph(
-      tempdict, distance=5)), '\n')
+      start_node=chosen_letter)
+# %%
 
+# print out a list of generated words
+# join the list of letters the function produces '' is the joining character
+# '\n' is adds a newline between prints
+
+for i in range(10):
+  print(''.join(walk_graph(tempdict,8)),'\n')
 
 
 # %%
+
+# notes:
+
+# --next steps--
+
+# $ add wiki corpus
+# $ create a weighed list of word lenghts in corpus. Use the list to generate new words with random lenghts
+# $ remove non alphabetic characters from corpus
+# $ what other stats can I get out of the corpus? Avg word lengts, popular words, least popular words?
+
+# --random module--
 
 # random. offers different random object gerators
 # choice generates random objects from a list
@@ -90,7 +103,7 @@ for i in range(10):
 # random.choice([1,2,3,4,5])
 # random.choice(list(tempdict.keys()))
 
-#
+# --np.array, normalizing counts and % weights--
 
 # np.array creates an array with dictionary item values that can be manipulated. In this case letter counts.
 # /= divides the variable with itself
@@ -102,37 +115,7 @@ for i in range(10):
 # weights = np.array(list(tempdict['m'].values()),dtype=np.float64) / np.array(list(tempdict['m'].values()),dtype=np.float64).sum()
 # weights /= weights.sum()
 
-#
+# --weighed choices--
 
 # this is combined into making random but weighed choices
 # np.random.choice([1,2,3,4,5], None, p=(np.array([1,2,3,4,5]) / np.array([1,2,3,4,5]).sum()))
-
-#
-
-# the last part is recursion?
-
-# def factorial(x):
-#   if x == 1:
-#     return 1
-#   else:
-#     return (x * factorial(x-1))
-
-# factorial(3)
-
-# %%
-
-start_node = random.choice(list(tempdict.keys()))
-
-weights = np.array(
-    list(tempdict[start_node].values()),
-    dtype=np.float64)
-# Normalize word counts to sum to 1.
-weights /= weights.sum()
-
-choices = list(tempdict[start_node].keys())
-
-print('Start node: ',start_node, ' Weights: ', weights, 'Choices: ', choices)
-
-np.random.choice(choices, None, p=weights)
-
-# %%
