@@ -8,13 +8,15 @@ import re
 # defaultdict is like a dictionary but returns a default value when called with a non-existent key
 from collections import defaultdict
 
+# %%
+# read in corpus
+list_ow = open('test_corpus.txt',"r",encoding='utf-8').read().split()
+
 #%%
 # nested tempdict to count the number of instances for each letter after the first letter
 # defaultdict in defaultdict creates acts as a counter
 # lambda is used because defaultdict needs an argument (not defaultdict) otherwise returns an error
 tempdict = defaultdict(lambda:defaultdict(int))
-# sample text
-list_ow = 'mingi tekst mis vajab lahti löömist siin ei maksa pikalt peatuda sest peaminister ei ole adekvaatne meie vestluses osalema ta arvab et aguraijujaid pole olemas vaid need on väljamõeldised'.split()
 
 # parse sample text and count letters
 # loop over words in list, save first words first letter
@@ -109,11 +111,28 @@ for i in range(10):
 
 # the last part is recursion?
 
-def func001(loops=5):
-  if loops <= 0:
-    return []
-  return 1 + func001(loops=loops-1)
+# def factorial(x):
+#   if x == 1:
+#     return 1
+#   else:
+#     return (x * factorial(x-1))
 
-func001()
+# factorial(3)
+
+# %%
+
+start_node = random.choice(list(tempdict.keys()))
+
+weights = np.array(
+    list(tempdict[start_node].values()),
+    dtype=np.float64)
+# Normalize word counts to sum to 1.
+weights /= weights.sum()
+
+choices = list(tempdict[start_node].keys())
+
+print('Start node: ',start_node, ' Weights: ', weights, 'Choices: ', choices)
+
+np.random.choice(choices, None, p=weights)
 
 # %%
