@@ -10,6 +10,8 @@ from collections import defaultdict
 
 # %%
 # read in corpus
+# wiki_txt = open(r'C:\Users\raine\Downloads\etwiki_latest\wiki_et.txt','r',encoding='utf-8').read()
+# wiki_txt_split = wiki_txt.split()
 list_ow = open('test_corpus.txt',"r",encoding='utf-8').read().upper().split()
 
 #%%
