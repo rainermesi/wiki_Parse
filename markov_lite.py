@@ -10,9 +10,10 @@ from collections import defaultdict
 
 # %%
 # read in corpus
-# wiki_txt = open(r'C:\Users\raine\Downloads\etwiki_latest\wiki_et.txt','r',encoding='utf-8').read()
-# wiki_txt_split = wiki_txt.split()
-list_ow = open('test_corpus.txt',"r",encoding='utf-8').read().upper().split()
+wiki_txt = open(r'C:\Users\raine\Downloads\etwiki_latest\wiki_et.txt','r',encoding='utf-8').read()
+list_ow = wiki_txt.lower().split()
+
+# list_ow = open('test_corpus.txt',"r",encoding='utf-8').read().upper().split()
 
 #%%
 # nested tempdict to count the number of instances for each letter after the first letter
@@ -33,9 +34,23 @@ for item in list_ow:
     item_prev_letter = i
 
 #%%
-# check results
-tempdict
+# check results & clean up foreign letters
+# estonian alphabet
+abc = ['A', 'a', 'B', 'b', 'D', 'd', 'E', 'e', 'F', 'f', 'G', 'g', 'H', 'h', 'I', 'i', 'J', 'j', 'K', 'k', 'L', 'l', 'M', 'm', 'N', 'n', 'O', 'o', 'P', 'p', 'R', 'r', 'S', 's', 'Š', 'š', 'Z', 'z', 'Ž', 'ž', 'T', 't', 'U', 'u', 'V', 'v', 'Õ', 'õ', 'Ä', 'ä', 'Ö', 'ö', 'Ü', 'ü']
+abc = list(dict.fromkeys(i.lower() for i in abc))
 
+# 2 approaches here:
+# clean primary keys
+tempdict2 = dict((k, tempdict[k]) for k in abc 
+                                         if k in tempdict) 
+# clean nested key value pairs
+for letter in abc:
+  for item in tempdict2[letter].copy():
+    if item not in abc:
+      del tempdict2[letter][item]
+
+# %%
+tempdict = tempdict2
 #%%
 # try to combine letters
 # create a list of letters from above dictionary using the looping letter
