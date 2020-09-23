@@ -1,6 +1,7 @@
 
 #%%
 import numpy as np
+import pandas as pd
 import random
 # import regex module
 import re
@@ -27,7 +28,7 @@ def word_len_df_gen(in_list):
 word_len_df = word_len_df_gen(list_ow)
 
 def rand_word_len_picker(in_df):
-    return np.random.choice(in_df[1],p=in_df[2])
+    return np.random.choice(in_df[0],p=in_df[2])
 
 #%%
 # nested tempdict to count the number of instances for each letter after the first letter
@@ -112,11 +113,22 @@ def walk_graph(graph, distance=3, start_node=None):
 # '\n' is adds a newline between prints
 
 for i in range(10):
-  print(''.join(walk_graph(tempdict,8)),'\n')
-
+  print(''.join(walk_graph(tempdict,rand_word_len_picker(word_len_df))),'\n')
 
 # %%
+# make a graph
 
+viz_df = pd.DataFrame.from_dict(tempdict)
+viz_df = viz_df.stack().reset_index()
+viz_df.columns = ['p_letter','s_letter','l_count']
+
+# %%
+viz_df['l_rank'] = viz_df.groupby('p_letter')['l_count'].rank('dense',ascending=False)
+
+# %%
+viz_df.to_csv('viz_df.csv')
+
+# %%
 # notes:
 
 # --next steps--
@@ -150,3 +162,5 @@ for i in range(10):
 
 # this is combined into making random but weighed choices
 # np.random.choice([1,2,3,4,5], None, p=(np.array([1,2,3,4,5]) / np.array([1,2,3,4,5]).sum()))
+
+# %%
