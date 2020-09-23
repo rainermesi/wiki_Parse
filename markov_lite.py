@@ -7,6 +7,7 @@ import re
 # import additional data structures module
 # defaultdict is like a dictionary but returns a default value when called with a non-existent key
 from collections import defaultdict
+from collections import Counter
 
 # %%
 # read in corpus
@@ -14,6 +15,19 @@ wiki_txt = open(r'C:\Users\raine\Downloads\etwiki_latest\wiki_et.txt','r',encodi
 list_ow = wiki_txt.lower().split()
 
 # list_ow = open('test_corpus.txt',"r",encoding='utf-8').read().upper().split()
+# %%
+# get word lenght weights in corpus
+
+def word_len_df_gen(in_list):
+    count_list = [len(item) for item in in_list]
+    count_df = pd.DataFrame.from_dict(collections.Counter(count_list).items())
+    count_df[2] = count_df[1] / count_df[1].sum()
+    return count_df
+
+word_len_df = word_len_df_gen(list_ow)
+
+def rand_word_len_picker(in_df):
+    return np.random.choice(in_df[1],p=in_df[2])
 
 #%%
 # nested tempdict to count the number of instances for each letter after the first letter
