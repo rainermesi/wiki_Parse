@@ -112,8 +112,13 @@ def walk_graph(graph, distance=3, start_node=None):
 # join the list of letters the function produces '' is the joining character
 # '\n' is adds a newline between prints
 
-for i in range(10):
-  print(''.join(walk_graph(tempdict,rand_word_len_picker(word_len_df))),'\n')
+word_file = open('word_file.txt','a',encoding='utf-8')
+
+for i in range(1000): 
+  word_file.write(''.join(walk_graph(tempdict,rand_word_len_picker(word_len_df))))
+  word_file.write('\n')
+
+word_file.close()
 
 # %%
 # make a graph
